@@ -1,0 +1,191 @@
+<div class="main-content">
+    <!-- Left Column -->
+    <div class="left-column">
+        <!-- Visual Charts Section -->
+        <section class="charts-section">
+            <h2 class="section-title">📈 Financial Overview</h2>
+            <div class="charts-container">
+                <div class="chart-placeholder">
+                    <div class="chart-title">Expense Categories</div>
+                    <div>🥧 Pie Chart</div>
+                    <small>Interactive breakdown by category</small>
+                </div>
+                <div class="chart-placeholder">
+                    <div class="chart-title">Monthly Trends</div>
+                    <div>📊 Line Chart</div>
+                    <small>Income vs Expenses over time</small>
+                </div>
+            </div>
+        </section>
+
+        <!-- Transaction Management -->
+        <section class="transaction-section">
+            <div class="transaction-header">
+                <h2 class="section-title">💳 Transaction Management</h2>
+                <button class="add-transaction-btn">+ Add Transaction</button>
+            </div>
+
+            <!-- Category Filtering -->
+            <div class="filters">
+                <div class="filter-group">
+                    <label class="filter-label">Category</label>
+                    <select class="filter-select">
+                        <option>All Categories</option>
+                        <option>Food & Dining</option>
+                        <option>Transportation</option>
+                        <option>Entertainment</option>
+                        <option>Utilities</option>
+                        <option>Healthcare</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Date From</label>
+                    <input type="date" class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Date To</label>
+                    <input type="date" class="filter-input">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Min Amount</label>
+                    <input type="number" class="filter-input" placeholder="$0">
+                </div>
+                <div class="filter-group">
+                    <label class="filter-label">Max Amount</label>
+                    <input type="number" class="filter-input" placeholder="$1000">
+                </div>
+            </div>
+
+            <!-- Add/Edit/Delete Transaction Entries -->
+            <div class="transaction-list">
+                <div class="transaction-header-row">
+                    <div>Description</div>
+                    <div>Category</div>
+                    <div>Date</div>
+                    <div>Amount</div>
+                    <div>Actions</div>
+                </div>
+                <div class="transaction-row">
+                    <div>Grocery Shopping at Walmart</div>
+                    <div>Food & Dining</div>
+                    <div>2024-03-15</div>
+                    <div style="color: #ef4444;">-$127.50</div>
+                    <div class="transaction-actions">
+                        <button class="action-btn edit-btn">Edit</button>
+                        <button class="action-btn delete-btn">Del</button>
+                    </div>
+                </div>
+                <div class="transaction-row">
+                    <div>Salary Deposit</div>
+                    <div>Income</div>
+                    <div>2024-03-14</div>
+                    <div style="color: #10b981;">+$2,500.00</div>
+                    <div class="transaction-actions">
+                        <button class="action-btn edit-btn">Edit</button>
+                        <button class="action-btn delete-btn">Del</button>
+                    </div>
+                </div>
+                <div class="transaction-row">
+                    <div>Netflix Subscription</div>
+                    <div>Entertainment</div>
+                    <div>2024-03-13</div>
+                    <div style="color: #ef4444;">-$15.99</div>
+                    <div class="transaction-actions">
+                        <button class="action-btn edit-btn">Edit</button>
+                        <button class="action-btn delete-btn">Del</button>
+                    </div>
+                </div>
+                <div class="transaction-row">
+                    <div>Gas Station Fill-up</div>
+                    <div>Transportation</div>
+                    <div>2024-03-12</div>
+                    <div style="color: #ef4444;">-$45.20</div>
+                    <div class="transaction-actions">
+                        <button class="action-btn edit-btn">Edit</button>
+                        <button class="action-btn delete-btn">Del</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Right Column -->
+    <div class="right-column">
+        <!-- Budget Goals with Progress Indicators -->
+        <section class="budget-section">
+            <h2 class="section-title">🎯 Budget Goals</h2>
+            
+            <div class="budget-goal">
+                <div class="budget-header">
+                    <div class="budget-category">Food & Dining</div>
+                    <div class="budget-amounts">$450 / $600</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill progress-safe" style="width: 75%;"></div>
+                </div>
+            </div>
+
+            <div class="budget-goal">
+                <div class="budget-header">
+                    <div class="budget-category">Transportation</div>
+                    <div class="budget-amounts">$280 / $300</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill progress-warning" style="width: 93%;"></div>
+                </div>
+            </div>
+
+            <div class="budget-goal">
+                <div class="budget-header">
+                    <div class="budget-category">Entertainment</div>
+                    <div class="budget-amounts">$220 / $200</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill progress-danger" style="width: 110%;"></div>
+                </div>
+            </div>
+
+            <div class="budget-goal">
+                <div class="budget-header">
+                    <div class="budget-category">Utilities</div>
+                    <div class="budget-amounts">$120 / $250</div>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill progress-safe" style="width: 48%;"></div>
+                </div>
+            </div>
+
+            <button class="set-budget-btn">+ Set New Budget Goal</button>
+        </section>
+
+        <!-- Category Legend -->
+        <section class="category-legend">
+            <h3 class="section-title">📋 Categories</h3>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #ef4444;"></div>
+                <div class="legend-text">Food & Dining</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #3b82f6;"></div>
+                <div class="legend-text">Transportation</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #8b5cf6;"></div>
+                <div class="legend-text">Entertainment</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #f59e0b;"></div>
+                <div class="legend-text">Utilities</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #10b981;"></div>
+                <div class="legend-text">Healthcare</div>
+            </div>
+            <div class="legend-item">
+                <div class="legend-color" style="background: #6b7280;"></div>
+                <div class="legend-text">Other</div>
+            </div>
+        </section>
+    </div>
+</div>
+ 
