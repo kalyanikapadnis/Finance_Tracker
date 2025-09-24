@@ -1,1 +1,37 @@
 /* You can add global styles to this file, and also import other style files */
+/* Light theme (default) */
+:root {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --bg-primary: #1f2937;
+  --bg-secondary: #374151;
+  --text-primary: #f9fafb;
+  --text-secondary: #d1d5db;
+  --border-color: #6b7280;
+}
+
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+[data-theme="dark"] .header {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}
+
+[data-theme="dark"] .summary-card,
+[data-theme="dark"] .charts-section,
+[data-theme="dark"] .transaction-section,
+[data-theme="dark"] .budget-section {
+  background: var(--bg-secondary) !important;
+  color: var(--text-primary) !important;
+}

@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
-
+import { Component, signal, inject} from '@angular/core';
+import { AuthService } from '../services/auth';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -10,4 +11,12 @@ import { Component } from '@angular/core';
 })
 export class Header {
 
+    private readonly router = inject(Router);
+    private readonly authService = inject(AuthService);
+    currentUser = signal(this.authService.getUser());
+
+    logout() {
+      this.authService.logout();
+      this.router.navigate(['/login']);
+    }
 }

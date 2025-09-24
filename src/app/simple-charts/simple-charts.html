@@ -1,0 +1,36 @@
+<div class="charts-container">
+      <!-- Pie Chart Representation -->
+      <div class="chart-card">
+        <h3>Expense Categories</h3>
+        <div class="pie-chart-container">
+          @for (item of pieChartData; track item.category; let i = $index) {
+            <div class="pie-item">
+              <div class="pie-color" [style.background-color]="getColor(i)"></div>
+              <div class="pie-info">
+                <span class="pie-category">{{ item.category }}</span>
+                <span class="pie-amount">{{ item.total_amount | rupee }}</span>
+              </div>
+            </div>
+          } @empty {
+            <div class="no-data">No expense data available</div>
+          }
+        </div>
+      </div>
+
+      <!-- Line Chart Representation -->
+      <div class="chart-card">
+        <h3>Monthly Trends</h3>
+        <div class="line-chart-container">
+          <div class="trend-item">
+            <span class="trend-label">Income</span>
+            <div class="trend-bar income" [style.width]="getIncomeWidth()"></div>
+            <span class="trend-value">{{ totalIncome | rupee }}</span>
+          </div>
+          <div class="trend-item">
+            <span class="trend-label">Expenses</span>
+            <div class="trend-bar expense" [style.width]="getExpenseWidth()"></div>
+            <span class="trend-value">{{ totalExpenses | rupee }}</span>
+          </div>
+        </div>
+      </div>
+    </div>

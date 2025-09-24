@@ -4,7 +4,8 @@ import { Component } from '@angular/core';
   selector: 'app-financial-overview',
   imports: [],
   templateUrl: './financial-overview.html',
-  styleUrl: './financial-overview.css'
+  styleUrl: './financial-overview.css',
+  standalone: true
 })
 export class FinancialOverview {
 

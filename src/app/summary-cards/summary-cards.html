@@ -1,17 +1,32 @@
+<!-- Summary Cards -->
 <section class="summary-section">
-    <div class="summary-card income">
-        <div class="card-title">Total Income</div>
-        <div class="card-amount">$5,240</div>
-        <div class="percentage-change positive">+12.5% from last month</div>
+  <div class="summary-card income">
+    <div class="card-title">Total Income</div>
+    <div class="card-amount">{{ getTotalIncome() | rupee }}</div>
+    <div class="percentage-change" 
+         [class.positive]="getIncomeChange().isPositive" 
+         [class.negative]="!getIncomeChange().isPositive">
+      {{ getIncomeChange().isPositive ? '+' : '' }}{{ getIncomeChange().percentage }}% from last month
     </div>
-    <div class="summary-card expense">
-        <div class="card-title">Total Expenses</div>
-        <div class="card-amount">$3,890</div>
-        <div class="percentage-change negative">+8.2% from last month</div>
+  </div>
+  
+  <div class="summary-card expense">
+    <div class="card-title">Total Expenses</div>
+    <div class="card-amount">{{ getTotalExpenses() | rupee }}</div>
+    <div class="percentage-change" 
+         [class.positive]="getExpenseChange().isPositive" 
+         [class.negative]="!getExpenseChange().isPositive">
+      {{ getExpenseChange().isPositive ? '+' : '' }}{{ getExpenseChange().percentage }}% from last month
     </div>
-    <div class="summary-card savings">
-        <div class="card-title">Total Savings</div>
-        <div class="card-amount">$1,350</div>
-        <div class="percentage-change positive">+18.9% from last month</div>
+  </div>
+  
+  <div class="summary-card savings">
+    <div class="card-title">Total Savings</div>
+    <div class="card-amount">{{ getNetSavings() | rupee }}</div>
+    <div class="percentage-change" 
+         [class.positive]="getSavingsChange().isPositive" 
+         [class.negative]="!getSavingsChange().isPositive">
+      {{ getSavingsChange().isPositive ? '+' : '' }}{{ getSavingsChange().percentage }}% from last month
     </div>
+  </div>
 </section>

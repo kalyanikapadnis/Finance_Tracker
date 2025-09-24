@@ -1,0 +1,111 @@
+.charts-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+    }
+
+    .chart-card {
+      background: #f9fafb;
+      border-radius: 8px;
+      padding: 20px;
+      border: 1px solid #e5e7eb;
+    }
+
+    .chart-card h3 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #374151;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .pie-chart-container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .pie-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 8px;
+      background: white;
+      border-radius: 6px;
+    }
+
+    .pie-color {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+    }
+
+    .pie-info {
+      display: flex;
+      justify-content: space-between;
+      flex: 1;
+      align-items: center;
+    }
+
+    .pie-category {
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .pie-amount {
+      font-weight: 600;
+      color: #ef4444;
+    }
+
+    .line-chart-container {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .trend-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .trend-label {
+      width: 80px;
+      font-weight: 500;
+      color: #374151;
+      font-size: 14px;
+    }
+
+    .trend-bar {
+      height: 20px;
+      border-radius: 10px;
+      min-width: 50px;
+      transition: width 0.3s ease;
+    }
+
+    .trend-bar.income {
+      background: linear-gradient(90deg, #10b981, #34d399);
+    }
+
+    .trend-bar.expense {
+      background: linear-gradient(90deg, #ef4444, #f87171);
+    }
+
+    .trend-value {
+      font-weight: 600;
+      color: #374151;
+      min-width: 80px;
+      text-align: right;
+    }
+
+    .no-data {
+      text-align: center;
+      color: #6b7280;
+      padding: 40px 20px;
+    }
+
+    @media (max-width: 768px) {
+      .charts-container {
+        grid-template-columns: 1fr;
+      }
+    }

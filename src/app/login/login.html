@@ -1,0 +1,29 @@
+<div class="loginContainer" style="border: 1px solid red">
+
+  <form #loginForm="ngForm" class="login-form">
+    <div>
+      <label for="username"><b>Username*</b></label>
+      <input type="text" name="username" [(ngModel)]="credentials.username" #username="ngModel" [disabled]="isLoading()" 
+        placeholder="Enter your username"         
+        required
+      >
+      @if (username.invalid && username.touched) {
+        <div class="field-error">Username is required</div>
+      }
+      
+    </div>
+    <p></p>
+    <div>
+      <label for="password"><b>Password*</b></label>
+      <input type="password" name="password" [(ngModel)]="credentials.password" #password="ngModel" [disabled]="isLoading()" 
+        placeholder="Enter your password" 
+        minlength="6"
+        required
+      >
+    </div>
+    <p></p>
+    <button type="submit" [disabled]="!loginForm.valid" (click)="onLogin()"> Login </button>
+    <button type="button" [disabled]="!loginForm.valid" (click)="onRegister()"> Register </button>
+  </form>
+
+</div>

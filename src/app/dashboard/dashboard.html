@@ -1,0 +1,347 @@
+<!-- Header -->
+<header class="header">
+  <div class="header-left">
+    <h1 class="logo">💰 FinanceTracker</h1>
+  </div>
+  <div class="header-right">
+    <div class="search-container">
+      <input type="text" placeholder="Search transactions..." class="search-input">
+      <button class="search-btn">🔍</button>
+    </div>
+    <button class="export-btn" (click)="exportData()">📊 Export Data</button>
+    <button class="theme-btn" (click)="toggleDarkMode()">🌙 Dark Mode</button>
+    <button class="logout-btn" (click)="logout()">Logout</button>
+  </div>
+</header>
+
+<!-- Summary Cards -->
+
+<app-summary-cards [dashboardSummary]="dashboardSummary()"></app-summary-cards>
+
+<!-- Main Content -->
+<div class="main-content">
+  <!-- Left Column -->
+  <div class="left-column">
+    <!-- Charts Section -->
+    <section class="charts-section">
+      <h2 class="section-title">📈 Financial Overview</h2>
+      <app-simple-charts 
+        [pieChartData]="dashboardSummary()?.category_breakdown || []"
+        [totalIncome]="getTotalIncome()"
+        [totalExpenses]="getTotalExpenses()">
+      </app-simple-charts>
+    </section>
+
+    <!-- Transaction Management -->
+    <section class="transaction-section">
+      <div class="section-header">
+        <h2 class="section-title">💳 Transaction Management</h2>
+        <button class="add-btn" (click)="openAddTransactionModal()">+ Add Transaction</button>
+      </div>
+
+      <!-- Filters -->
+      <div class="filters-row">
+        <div class="filter-group">
+          <label>CATEGORY</label>
+          <select [(ngModel)]="filters.category" (ngModelChange)="applyFilters()">
+            <option>All Categories</option>
+            @for (category of categories(); track category.id) {
+              <option [value]="category.category">{{ category.category }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label>DATE FROM</label>
+          <input type="date" [(ngModel)]="filters.dateFrom" (ngModelChange)="applyFilters()">
+        </div>
+
+        <div class="filter-group">
+          <label>DATE TO</label>
+          <input type="date" [(ngModel)]="filters.dateTo" (ngModelChange)="applyFilters()">
+        </div>
+
+        <div class="filter-group">
+          <label>MIN AMOUNT</label>
+          <input type="number" placeholder="$0" [(ngModel)]="filters.minAmount">
+        </div>
+
+        <div class="filter-group">
+          <label>MAX AMOUNT</label>
+          <input type="number" placeholder="$1000" [(ngModel)]="filters.maxAmount">
+        </div>
+      </div>
+
+      <!-- Transaction Table -->
+      <div class="transaction-table">
+        <div class="table-header">
+          <div>Description</div>
+          <div>Category</div>
+          <div>Date</div>
+          <div>Amount</div>
+          <div>Actions</div>
+        </div>
+
+        @for (transaction of transactions(); track transaction.id) {
+          <div class="table-row" [class.editing]="editingTransactionId() === transaction.id">
+            @if (editingTransactionId() === transaction.id) {
+              <!-- Edit Mode -->
+              <div>
+                <input 
+                  type="text" 
+                  [(ngModel)]="editTransactionForm.transaction_desc"
+                  class="edit-input"
+                  placeholder="Description"
+                >
+              </div>
+              <div>
+                <select [(ngModel)]="editTransactionForm.category" class="edit-input">
+                  @for (category of categories(); track category.id) {
+                    <option [value]="category.category">{{ category.category }}</option>
+                  }
+                </select>
+              </div>
+              <div>
+                <input 
+                  type="date" 
+                  [(ngModel)]="editTransactionForm.date"
+                  class="edit-input"
+                >
+              </div>
+              <div>
+                <input 
+                  type="number" 
+                  step="0.01" 
+                  [(ngModel)]="editTransactionForm.amount"
+                  class="edit-input"
+                >
+              </div>
+              <div class="actions">
+                <button class="edit-btn save" (click)="saveEditTransaction()">Save</button>
+                <button class="delete-btn cancel" (click)="cancelEdit()">Cancel</button>
+              </div>
+            } @else {
+              <!-- View Mode -->
+              <div>{{ transaction.transaction_desc || 'No description' }}</div>
+              <div>{{ transaction.category }}</div>
+              <div>{{ transaction.date | date:'yyyy-MM-dd' }}</div>
+              <div [class.positive]="transaction.amount > 0" [class.negative]="transaction.amount < 0">
+                ${{ transaction.amount | number:'1.2-2' }}
+              </div>
+              <div class="actions">
+                <button 
+                  class="edit-btn" 
+                  (click)="editTransaction(transaction)"
+                  [disabled]="editingTransactionId() !== null"
+                >
+                  Edit
+                </button>
+                <button 
+                  class="delete-btn" 
+                  (click)="deleteTransaction(transaction.id!)"
+                  [disabled]="editingTransactionId() !== null"
+                >
+                  Del
+                </button>
+              </div>
+            }
+          </div>
+        } @empty {
+          <div class="no-data">
+            <p>No transactions found</p>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+
+  <!-- Right Column -->
+  <div class="right-column">
+    <!-- Budget Goals -->
+    <section class="budget-section">
+      <h2 class="section-title">🎯 Budget Goals</h2>
+      
+      @for (goal of budgetGoals; track goal.category) {
+        <div class="budget-item">
+          <div class="budget-header">
+            <span class="budget-category">{{ goal.category }}</span>
+            <span class="budget-amount">${{ goal.spent }} / ${{ goal.budget }}</span>
+          </div>
+          <div class="progress-bar">
+            <div 
+              class="progress-fill"
+              [class.safe]="getBudgetStatus(goal) === 'safe'"
+              [class.warning]="getBudgetStatus(goal) === 'warning'" 
+              [class.danger]="getBudgetStatus(goal) === 'danger'"
+              [style.width.%]="getBudgetPercentage(goal)">
+            </div>
+          </div>
+        </div>
+      }
+      
+      <button class="set-budget-btn" (click)="openBudgetModal()">+ Set New Budget Goal</button>
+    </section>
+
+    <!-- Categories -->
+    <section class="categories-section">
+      <h2 class="section-title">📋 Categories</h2>
+      
+      @for (category of categories(); track category.id) {
+        <div class="category-item">
+          <span class="category-color" [style.background-color]="category.id % 2 === 0 ? '#ef4444' : '#3b82f6'"></span>
+          <span class="category-name">{{ category.category }}</span>
+        </div>
+      }
+    </section>
+  </div>
+</div>
+
+@if (showBudgetModal()) {
+  <div class="modal-overlay" (click)="closeBudgetModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Set New Budget Goal</h3>
+        <button class="close-btn" (click)="closeBudgetModal()">×</button>
+      </div>
+
+      @if (message()) {
+        <div class="message success">{{ message() }}</div>
+      }
+      
+      @if (errorMessage()) {
+        <div class="message error">{{ errorMessage() }}</div>
+      }
+
+      <form (ngSubmit)="setBudgetGoal()" #budgetForm="ngForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Category *</label>
+            <select [(ngModel)]="newBudget.category" name="budgetCategory" required>
+              <option value="">Select Category</option>
+              @for (category of categories(); track category.id) {
+                <option [value]="category.category">{{ category.category }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Monthly Budget Amount *</label>
+            <input 
+              type="number" 
+              step="0.01" 
+              [(ngModel)]="newBudget.amount" 
+              name="budgetAmount" 
+              required
+              placeholder="Enter budget amount"
+              min="1"
+            >
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="cancel-btn" (click)="closeBudgetModal()">
+            Cancel
+          </button>
+          <button type="submit" class="submit-btn" [disabled]="budgetForm.invalid">
+            Set Budget Goal
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
+<!-- Add Transaction Modal -->
+@if (showAddTransactionModal()) {
+  <div class="modal-overlay" (click)="closeAddTransactionModal()">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <h3>Add New Transaction</h3>
+        <button class="close-btn" (click)="closeAddTransactionModal()">×</button>
+      </div>
+
+      @if (message()) {
+        <div class="message success">{{ message() }}</div>
+      }
+      
+      @if (errorMessage()) {
+        <div class="message error">{{ errorMessage() }}</div>
+      }
+
+      <form (ngSubmit)="addTransaction()" #transactionForm="ngForm">
+        <div class="modal-body">
+          <div class="form-group">
+            <label>Category *</label>
+            <select [(ngModel)]="newTransaction.category" name="category" required>
+              <option value="">Select Category</option>
+              @for (category of categories(); track category.id) {
+                <option [value]="category.category">{{ category.category }}</option>
+              }
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Type *</label>
+            <select 
+              [(ngModel)]="newTransaction.transactionType" 
+              name="transactionType" 
+              required
+              [disabled]="isLoading()"
+            >
+              <option value="">Select Type</option>
+              <option value="credit">Credit (Income)</option>
+              <option value="debit">Debit (Expense)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Date *</label>
+            <input type="date" [(ngModel)]="newTransaction.date" name="date" required>
+          </div>
+
+          <div class="form-group">
+            <label>Amount *</label>
+            <input 
+              type="number" 
+              step="0.01" 
+              [(ngModel)]="newTransaction.amount" 
+              name="amount" 
+              required
+              placeholder="Enter amount (negative for expenses)"
+            >
+          </div>
+
+          <div class="form-group">
+            <label>Description</label>
+            <input 
+              type="text" 
+              [(ngModel)]="newTransaction.transaction_desc" 
+              name="description"
+              placeholder="Transaction description"
+            >
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button 
+            type="button" 
+            class="cancel-btn"
+            (click)="closeAddTransactionModal()"
+          >
+            Cancel
+          </button>
+          <button 
+            type="submit" 
+            class="submit-btn"
+            [disabled]="transactionForm.invalid || isLoading()"
+          >
+            @if (isLoading()) {
+              <span>Adding...</span>
+            } @else {
+              <span>Add Transaction</span>
+            }
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+}
